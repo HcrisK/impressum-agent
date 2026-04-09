@@ -13,8 +13,24 @@ import time
 # ── Keys aus Streamlit Secrets ──────────────────
 ANTHROPIC_KEY = st.secrets["ANTHROPIC_KEY"]
 HUBSPOT_KEY   = st.secrets["HUBSPOT_KEY"]
+APP_PASSWORT  = st.secrets["APP_PASSWORT"]
 
 client = anthropic.Anthropic(api_key=ANTHROPIC_KEY)
+
+# ── Passwortschutz ──────────────────────────────
+if "eingeloggt" not in st.session_state:
+    st.session_state.eingeloggt = False
+
+if not st.session_state.eingeloggt:
+    st.title("🔐 Impressum Agent")
+    passwort = st.text_input("Passwort eingeben:", type="password")
+    if st.button("Anmelden"):
+        if passwort == APP_PASSWORT:
+            st.session_state.eingeloggt = True
+            st.rerun()
+        else:
+            st.error("❌ Falsches Passwort!")
+    st.stop()
 
 # ── Impressum finden (ohne Selenium!) ──────────
 def basis_url(url):
