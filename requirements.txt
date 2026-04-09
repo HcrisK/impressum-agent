@@ -1,0 +1,6 @@
+anthropic
+requests
+openpyxl
+beautifulsoup4
+selenium
+streamlit
